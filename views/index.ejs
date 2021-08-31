@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приветсвите</title>
+</head>
+
+<body>
+    <div class="instruction">
+        Для корректной работы сервиса необходимо придерживаться следующих условий:
+        <ol>
+            <li>необходимо качественное освещение;</li>
+            <li>отсутсвие источников света в кадре;</li>
+            <li>испытуемый должен находиться перпендикулярно камере, желательно чтобы камера находилась на
+                уровне глаз</li>
+            <li>В кадр должно полностью попадать лицо испытуемого</li>
+        </ol>
+
+        После нажатия кнопки <span>"Начать интервью"</span> появится окно, которое будет транслировать
+        видеозапись с Вашей камеры. Чуть ниже
+        будет отражаться текущий ворос, Вам необходимо на него полностью ответить. Важно чтобы длина ответа на
+        каждый вопрос
+        была более 30 секунд. После ответа на вопрос необходимо нажать на кнопку <span>"следующий
+            вопрос"</span>, после чего появится новый
+        вопрос. Всего вопросов будет несколько, около 10-15 штук. После ответа на все вопросы появится кнопка
+        <span>"Завершить
+            интервью"</span> по нажатию которой видеозапись ответа завершится.
+    </div>
+    <div class="next_step">
+        <form id="fio" method="post">
+            <div class="field">
+                <input placeholder="Фамилия" required type="text" name="f" value="">
+            </div>
+            <div class="field">
+                <input placeholder="Имя" required type="text"  name="i" value="">
+            </div>
+            <div class="field">
+                <input placeholder="Отчество" required type="text" name="o" value="">
+            </div>
+            <button class="start" id="start" onclick="createAction()"></button>
+        </form>
+    </div>
+</body>
+<script>
+    function createAction() {
+        let inputs = document.getElementsByTagName('input')
+        let record_url = "https://teachingquality.onti.actcognitive.org/record"
+        document.getElementById("fio").action = record_url
+    }
+</script>
+<style>
+    * {
+        margin: 5px;
+    }
+
+    body {
+        background-color: #2c3531;
+    }
+
+    .instruction {
+        font-size: 20px;
+        color: #ffcb9a;
+    }
+
+    span {
+        color: #a4f56e;
+        font-weight: 700;
+    }
+
+    form {
+        padding: 20px;
+        width: 400px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .start {
+        font-family: "Tahoma";
+        width: 200px;
+        height: 200px;
+        outline-style: initial;
+        border-radius: 50%;
+        background: #116466;
+    }
+
+    .start::before {
+        font-size: 20px;
+        color: #ffcb9a;
+        cursor: pointer;
+        content: "Начать интервью";
+    }
+</style>
+
+</html>

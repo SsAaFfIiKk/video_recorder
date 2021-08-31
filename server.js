@@ -13,35 +13,40 @@ const io = require('socket.io')(server, { path: '/socket.io' })
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }));
 
 const qwList = ["Раскажите о себе, об образовании, об опыте работы.", "Что для вас идеальная вакансия?", "Проходили ли вы курсы повышения квалификации?",
-"Когда вы начили заниматься данным направлением работы?", "Решение каких задач вызывает у вас наибольший интерес?"]
+    "Когда вы начили заниматься данным направлением работы?", "Решение каких задач вызывает у вас наибольший интерес?"]
 
 app.get("/timestamp", (req, res) => {
-  let now = new Date().toLocaleTimeString();
-  console.log(now)
-  res.send("get time")
+    const fname_prefix = req.query.fname;
+    let now = new Date().toLocaleTimeString();
+    fs.writeFile(`./rec/${fname_prefix}.txt`, now, { flag: "a" }, err => { console.log(err) });
+    res.send("get time")
 })
 
 app.get("/get_qw", (req, res) => {
-  res.send(qwList)
+    res.send(qwList)
 })
 
-app.get('/record', (req, res) => {
-  const fname_prefix = req.query.fname_prefix;
-  const chunk_time = req.query.chunk_time;
-  res.render('record', { fname_prefix: fname_prefix || 'noname', chunk_time: chunk_time || 1000 })
+app.post('/record', (req, res) => {
+    const fname_prefix = req.body.f + req.body.i + req.body.o
+    res.render('record', { fname_prefix: fname_prefix || 'noname', chunk_time: 500 })
+})
+
+app.get("/start_interview", (req, res) => {
+    res.render("index")
 })
 
 io.on('connection', socket => {
-  socket.on('recorded-chunk', (data) => {
-    var fileStream = fs.createWriteStream(`./rec/${data.filename}.webm`, { flags: 'a' } );
-    fileStream.write(Buffer.from(new Uint8Array(data.chunk)));
-    console.log('chunk recieved');
-  })
+    socket.on('recorded-chunk', (data) => {
+        var fileStream = fs.createWriteStream(`./rec/${data.filename}.webm`, { flags: 'a' });
+        fileStream.write(Buffer.from(new Uint8Array(data.chunk)));
+        console.log('chunk recieved');
+    })
 })
 
 server.listen(port, host, () => {
-  console.log(`server running at link: https://${host}:${port}`);
-  console.log(`record video page: https://${host}:${port}/record`);
+    console.log(`server running at link: https://${host}:${port}`);
+    console.log(`record video page: https://${host}:${port}/record`);
 })

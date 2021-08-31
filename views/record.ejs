@@ -1,115 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Интервью</title>
-    <script src="/socket.io/socket.io.js" defer></script>      
+    <script src="/socket.io/socket.io.js" defer></script>
     <script>
         const FNAME_PREFIX = '<%= fname_prefix %>';
         const CHUNK_TIME = '<%= chunk_time %>';
     </script>
 </head>
-<body>
+
+<body onload="getVideoStream(); sendTimestamp()">
     <div class="main">
         <div class="flex">
             <div id="hidden1">
                 <br><video class="video" id="main-video"></video>
-                <br><p class="question" id="question"></p>
+                <br>
+                <p class="question" id="question"></p>
                 <br><button class="nextQw" id="nextQw" onclick="next()"></button>
             </div>
         </div>
         <div class="flex">
-            <button class="start" id="start" onclick="showHiden()"></button>
+            <div class="status" id="status">Идёт запись</div>
         </div>
     </div>
 </body>
 <script src="record.js" defer></script>
 <style>
-* {
-    margin: 5px;
-}
+    * {
+        margin: 5px;
+    }
 
-body {
-    background-color:#2c3531;
-}
+    body {
+        background-color: #2c3531;
+    }
 
+    .main {
+        display: flex;
+        flex-direction: row;
+    }
 
-.main {
-    display: flex;
-    flex-direction: row;
-}
+    .flex {
+        flex-grow: 0.5;
+    }
 
-.flex {
-    flex-grow: 0.5;
-}
+    #hidden1 {
+        display: block;
+    }
 
-#hidden1 {
-    display: none;
-}
+    .video {
+        height: 100%;
+        border-radius: 10%;
+    }
 
+    .question {
+        color: #1cceae;
+        font-size: 30px;
+        /* text-shadow: 0 0 20px #1cceae; */
+    }
 
-.video {
-    height: 100%;
-    border-radius: 10%;
-}
+    .nextQw {
+        width: 200px;
+        font-family: "Tahoma";
+        background: #116466;
+        cursor: pointer;
+        color: #ffcb9a;
+    }
 
-.question{
-    color: #1cceae;
-    font-size: 30px;
-    text-shadow: 0 0 20px #1cceae;
-}
+    .status {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: #e81919;
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 14px;
+        color: #ffcb9a;
+    }
 
-.start {
-    font-family: "Tahoma";
-    width: 200px;
-    height: 200px;
-    outline-style:initial;
-    border-radius: 50%;
-    background: #116466;
-}
-
-.nextQw {
-    width: 200px;
-    font-family: "Tahoma";
-    background: #116466;
-    cursor: pointer;
-    color: #ffcb9a;
-}
-
-.end {
-    width: 200px;
-    height: 200px;
-    outline-style:initial;
-    border-radius: 50%;
-    background: #116466;
-}
-
-.start::before {
-    font-size: 20px;
-    color: #ffcb9a;
-    cursor: pointer;
-    content: "Начать интервью";  
-}
-
-.start:disabled::before {
-    content: "Идёт запись";
-    font-size: 14px;
-}
-
-.start:disabled {
-    width: 70px;
-    height: 70px;
-    outline-style:initial;
-    border-radius: 50%;
-    background-color: #e81919;
-}
-
-.end:disabled::before {
-    content: "Интервью закончено, спасибо"; 
-    color: #a4f56e;
-}
-
+    .end {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background-color: #116466;
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 20px;
+        color: #a4f56e;
+    }
 </style>
+
 </html>

@@ -1,5 +1,4 @@
 const socket = io('https://teachingquality.onti.actcognitive.org', { path: '/socket.io' });
-const time_url = "https://teachingquality.onti.actcognitive.org/timestamp";
 const qw_url = "https://teachingquality.onti.actcognitive.org/get_qw"
 
 const videoElement = document.getElementById('main-video');
@@ -29,19 +28,13 @@ function recordVideo (stream) {
 
     mediaRecorder.ondataavailable = function(e) {
         if (e.data && e.data.size > 0) {
-            const filename = FNAME_PREFIX + ' ' + currentTimestamp;
+            const filename = FNAME_PREFIX;
             socket.emit('recorded-chunk', {
                 filename: filename,
                 chunk: e.data
             });
         }
     }
-}
-
-function showHiden(){
-    document.getElementById("hidden1").style.display = "block";
-    getVideoStream()
-    sendTimestamp()
 }
 
 fetch(qw_url)
@@ -79,27 +72,11 @@ function stopRecording(){
       
     videoElement.srcObject = null;
     document.getElementById("hidden1").style.display = "none";
-    document.getElementById("start").className = "end"
-}
-
-document.getElementById("start").addEventListener("click", disable);
-function disable() {
-    document.getElementById("start").disabled = true;
+    document.getElementById("status").className = "end"
+    document.getElementById("status").innerHTML = "Интервью закончено, спасибо"
 }
 
 function sendTimestamp() {
-    let req = fetch(time_url)
-    // let now = new Date().toLocaleTimeString();
-    // const formData = new FormData();
-    // formData.append("time", now);
-
-    // try {
-    //     fetch(time_url, {
-    //         method: 'POST',
-    //         body: formData,
-    //     });
-    // } 
-    // catch (e) {
-    //     console.log('Error:', e);
-    // }
+    let time_url = "https://teachingquality.onti.actcognitive.org/timestamp?fname=";
+    let req = fetch(time_url + FNAME_PREFIX)
 }
