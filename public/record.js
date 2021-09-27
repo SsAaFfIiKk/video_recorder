@@ -2,7 +2,19 @@ const socket = io('https://teachingquality.onti.actcognitive.org', { path: '/soc
 const qw_url = "https://teachingquality.onti.actcognitive.org/get_qw"
 
 const videoElement = document.getElementById('main-video');
-const constraints = { video: true, audio: true };
+const constraints = {
+    video: {
+        width: {
+            min: 320,
+            ideal: 640,
+            max: 640
+        },
+        height: {
+            min: 240,
+            ideal: 480,
+            max: 480
+        }
+    }, audio: true };
 const currentTimestamp = new Date().valueOf().toString();
 
 function getVideoStream() {
