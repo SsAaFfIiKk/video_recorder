@@ -2,6 +2,7 @@ const fs = require('fs')
 const key = fs.readFileSync('certs/privkey.pem')
 const cert = fs.readFileSync('certs/cert.pem')
 const credentials = { key: key, cert: cert }
+const cors = require('cors')
 
 const host = '0.0.0.0'
 const port = 8001
@@ -12,6 +13,8 @@ const server = require('https').createServer(credentials, app)
 const io = require('socket.io')(server, { path: '/socket.io' })
 
 app.set('view engine', 'ejs')
+app.use(cors())
+app.options('*', cors())
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }));
 
